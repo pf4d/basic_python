@@ -1,7 +1,9 @@
 import sys
 import time
 
-t0 = time.time()     # initial time
+t0 = time.time()       # initial time
+fg = '\033[38;5;1m'   # for colors
+
 try:
   while True:
     tn = time.time()   # current time
@@ -12,7 +14,7 @@ try:
     s  = s % 60        # reset seconds
     m  = m % 60        # reset minutes
      
-    sys.stdout.write("\r%02d:%02d:%02d" % (h,m,s))
+    sys.stdout.write(fg + "\r%02d:%02d:%02d \033[0m" % (h,m,s))
     sys.stdout.flush()
     
     time.sleep(1)      # sleep for 1 second.
