@@ -1,11 +1,28 @@
 import sys
 import time
+import keyboard
+import threading
 
 t0 = time.time()       # initial time
 fg = '\033[38;5;1m'   # for colors
 
+def quit_on_user_input():
+    # thread will lock up and wait for user to input.
+    # That's why this is on a separate thread.
+    keyboard.wait('space')
+
+quit_thread = threading.Thread(target=quit_on_user_input, args=[])
+quit_thread.start()
+
 try:
   while True:
+    try:
+      if keyboard.is_pressed('space'):
+        keyboard.wait('space')
+      else:
+        print ("fuck")*29
+    except:
+      pass
     tn = time.time()   # current time
     s  = tn - t0       # seconds
     m  = s/60.         # minutes
