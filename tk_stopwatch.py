@@ -12,18 +12,22 @@ def update_timeText():
     global timer
     # Every time this function is called, 
     # we will increment 1 centisecond (1/100 of a second)
-    timer[2] += 1
+    timer[3] += 1
     
     # Every 100 centisecond is equal to 1 second
-    if (timer[2] >= 100):
-        timer[2] = 0
-        timer[1] += 1
+    if (timer[3] >= 100):
+        timer[3] = 0
+        timer[2] += 1
     # Every 60 seconds is equal to 1 min
+    if (timer[2] >= 60):
+        timer[1] += 1
+        timer[2] = 0
+    # Every 60 minutes is equal to 1 hour
     if (timer[1] >= 60):
         timer[0] += 1
         timer[1] = 0
     # We create our time string here
-    timeString = pattern.format(timer[0], timer[1], timer[2])
+    timeString = pattern.format(*timer)
     # Update the timeText Label box with the current time
     timeText.configure(text=timeString)
     # Call the update_timeText() function after 1 centisecond
@@ -42,8 +46,8 @@ def pause():
 # To reset the timer to 00:00:00
 def reset():
     global timer
-    timer = [0, 0, 0]
-    timeText.configure(text='00:00:00')
+    timer = [0, 0, 0, 0]
+    timeText.configure(text='00:00:00:00')
 
 # To exist our program
 def exist():
@@ -55,27 +59,27 @@ def exist():
 state = False
 
 root = tk.Tk()
-root.wm_title('Simple Kitchen Timer Example')
+root.wm_title('timer')
 
-# Our time structure [min, sec, centsec]
-timer = [0, 0, 0]
+# Our time structure [hour, min, sec, centsec]
+timer = [0, 0, 0, 0]
 # The format is padding all the 
-pattern = '{0:02d}:{1:02d}:{2:02d}'
+pattern = '{0:02d}:{1:02d}:{2:02d}:{3:02d}'
 
 # Create a timeText Label (a text box)
-timeText = tk.Label(root, text="00:00:00", font=("mono", 20))
+timeText = tk.Label(root, text="00:00:00:00", font=("mono", 20))
 timeText.pack()
 
-startButton = tk.Button(root, text='start', font=("mono", 8), command=start)
+startButton = tk.Button(root, text='start',   font=("mono", 8), command=start)
 startButton.pack()
 
-pauseButton = tk.Button(root, text='pause', font=("mono", 8), command=pause)
+pauseButton = tk.Button(root, text='pause',   font=("mono", 8), command=pause)
 pauseButton.pack()
 
-resetButton = tk.Button(root, text='reset', font=("mono", 8), command=reset)
+resetButton = tk.Button(root, text='reset',   font=("mono", 8), command=reset)
 resetButton.pack()
-
-quitButton = tk.Button(root, text='quit',   font=("mono", 8), command=exist)
+ 
+quitButton = tk.Button(root,  text='quit',    font=("mono", 8), command=exist)
 quitButton.pack()
 
 update_timeText()
